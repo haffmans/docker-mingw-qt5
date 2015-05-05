@@ -18,7 +18,8 @@ RUN    echo "[mingw-w64]" >> /etc/pacman.conf \
 # Add some useful packages to the base system
 RUN pacman -S --noconfirm --noprogressbar \
         imagemagick \
-        make
+        make \
+        git
 
 # Install MingW packages
 RUN pacman -S --noconfirm --noprogressbar \
