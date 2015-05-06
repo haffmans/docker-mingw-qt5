@@ -1,13 +1,18 @@
 # MingW64 + Qt5 for cross-compile builds to Windows
 # Based on ArchLinux image
 
+# Note: pacman cache is cleared to reduce image size by a few 100 mbs in total.
+# `pacman -Scc --noconfirm` responds 'N' by default to removing the cache, hence
+# the echo mechanism.
+
 FROM base/archlinux:latest
 MAINTAINER Wouter Haffmans <wouter@simply-life.net>
 
 # Update base system
 RUN    pacman -Sy --noconfirm --noprogressbar archlinux-keyring  \
     && pacman -Syu --noconfirm --noprogressbar \
-    && pacman-db-upgrade
+    && pacman-db-upgrade \
+    && (echo -e "y\ny\n" | pacman -Scc)
 
 # Add mingw-repo
 RUN    echo "[mingw-w64]" >> /etc/pacman.conf \
@@ -19,7 +24,8 @@ RUN    echo "[mingw-w64]" >> /etc/pacman.conf \
 RUN pacman -S --noconfirm --noprogressbar \
         imagemagick \
         make \
-        git
+        git \
+    && (echo -e "y\ny\n" | pacman -Scc)
 
 # Install MingW packages
 RUN pacman -S --noconfirm --noprogressbar \
@@ -69,6 +75,5 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-sqlite \
         mingw-w64-termcap \
         mingw-w64-tools \
-        mingw-w64-zlib
-
-VOLUME /deploy
+        mingw-w64-zlib \
+    && (echo -e "y\ny\n" | pacman -Scc)
