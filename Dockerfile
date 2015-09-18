@@ -29,6 +29,7 @@ RUN pacman -S --noconfirm --noprogressbar \
 
 # Install MingW packages
 RUN pacman -S --noconfirm --noprogressbar \
+        binutils \
         mingw-w64-binutils \
         mingw-w64-crt \
         mingw-w64-gcc \
@@ -50,6 +51,8 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-mariadb-connector-c \
         mingw-w64-nsis \
         mingw-w64-openssl \
+        mingw-w64-openjpeg \
+        mingw-w64-openjpeg2 \
         mingw-w64-pcre \
         mingw-w64-pdcurses \
         mingw-w64-pkg-config \
