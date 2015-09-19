@@ -14,6 +14,12 @@ RUN    pacman -Sy --noconfirm --noprogressbar archlinux-keyring  \
     && pacman-db-upgrade \
     && (echo -e "y\ny\n" | pacman -Scc)
 
+# Add Simply-life repo
+RUN    echo "[simply-life]" >> /etc/pacman.conf \
+    && echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf \
+    && echo "Server = https://git.simply-life.net/packages/archlinux/\$arch" >> /etc/pacman.conf \
+    && pacman -Sy
+
 # Add mingw-repo
 RUN    echo "[mingw-w64]" >> /etc/pacman.conf \
     && echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf \
