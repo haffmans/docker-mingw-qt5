@@ -26,13 +26,13 @@ Build other:
 Build branch on Docker Hub:
   stage: deploy
   script:
-  - 'curl -H "Content-Type: application/json" --data "{\"source_type\": \"Branch\", \"source_name\": \"${CI_BUILD_REF_NAME}\"}" -X POST https://registry.hub.docker.com/u/haffmans/docker-mingw-qt5/trigger/${DOCKERHUB_TOKEN}/'
+  - 'curl -H "Content-Type: application/json" --data "{\"source_type\": \"Branch\", \"source_name\": \"${CI_BUILD_REF_NAME}\"}" -X POST https://registry.hub.docker.com/u/${DOCKERHUB_USER}/${DOCKERHUB_REPO}/trigger/${DOCKERHUB_TOKEN}/'
   except:
   - tags
 
 Build tag on Docker Hub:
   stage: deploy
   script:
-  - 'curl -H "Content-Type: application/json" --data "{\"source_type\": \"Tag\", \"source_name\": \"${CI_BUILD_REF_NAME}\"}" -X POST https://registry.hub.docker.com/u/haffmans/docker-mingw-qt5/trigger/${DOCKERHUB_TOKEN}/'
+  - 'curl -H "Content-Type: application/json" --data "{\"source_type\": \"Tag\", \"source_name\": \"${CI_BUILD_REF_NAME}\"}" -X POST https://registry.hub.docker.com/u/${DOCKERHUB_USER}/${DOCKERHUB_REPO}/trigger/${DOCKERHUB_TOKEN}/'
   except:
   - branches
