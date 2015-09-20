@@ -1,0 +1,38 @@
+stages:
+  - build
+  - deploy
+
+Build master:
+  stage: build
+  script:
+  - docker rmi --force mingw-qt5:latest || /bin/true
+  - docker build --tag=mingw-qt5:latest .
+  tags:
+  - docker
+  only:
+  - master
+
+Build other:
+  stage: build
+  script:
+  - docker build --tag=mingw-qt5:${CI_BUILD_REF_NAME} .
+  tags:
+  - docker
+  except:
+  - master
+
+# Note: to be friendly to Docker Hub, the auto-update on push is disabled in Docker hub.
+# The repository itself is mirrored to GitHub immediately on every push.
+Build branch on Docker Hub:
+  stage: deploy
+  script:
+  -  curl -H "Content-Type: application/json" --data '{"source_type": "Branch", "source_name": "${CI_BUILD_REF_NAME}"}' -X POST https://registry.hub.docker.com/u/haffmans/docker-mingw-qt5/trigger/${DOCKERHUB_TOKEN}/
+  except:
+  - tags
+
+Build tag on Docker Hub:
+  stage: deploy
+  script:
+  -  curl -H "Content-Type: application/json" --data '{"source_type": "Tag", "source_name": "${CI_BUILD_REF_NAME}"}' -X POST https://registry.hub.docker.com/u/haffmans/docker-mingw-qt5/trigger/${DOCKERHUB_TOKEN}/
+  except:
+  - branches
