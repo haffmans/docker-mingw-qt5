@@ -21,18 +21,16 @@ Build other:
   except:
   - master
 
-# Note: to be friendly to Docker Hub, the auto-update on push is disabled in Docker hub.
-# The repository itself is mirrored to GitHub immediately on every push.
-Build branch on Docker Hub:
+Push master to Docker Hub:
   stage: deploy
   script:
-  - 'curl -H "Content-Type: application/json" --data "{\"source_type\": \"Branch\", \"source_name\": \"${CI_BUILD_REF_NAME}\"}" -X POST https://registry.hub.docker.com/u/${DOCKERHUB_USER}/${DOCKERHUB_REPO}/trigger/${DOCKERHUB_TOKEN}/'
-  except:
-  - tags
+  - docker push ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest
+  only:
+  - master
 
-Build tag on Docker Hub:
+Push to Docker Hub:
   stage: deploy
   script:
-  - 'curl -H "Content-Type: application/json" --data "{\"source_type\": \"Tag\", \"source_name\": \"${CI_BUILD_REF_NAME}\"}" -X POST https://registry.hub.docker.com/u/${DOCKERHUB_USER}/${DOCKERHUB_REPO}/trigger/${DOCKERHUB_TOKEN}/'
+  - docker push ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:${CI_BUILD_REF_NAME}
   except:
-  - branches
+  - master
