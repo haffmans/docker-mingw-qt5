@@ -5,8 +5,8 @@ stages:
 Build master:
   stage: build
   script:
-  - docker rmi --force mingw-qt5:latest || /bin/true
-  - docker build --tag=mingw-qt5:latest .
+  - docker rmi --force ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest || /bin/true
+  - docker build --tag=${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest .
   tags:
   - docker
   only:
@@ -15,7 +15,7 @@ Build master:
 Build other:
   stage: build
   script:
-  - docker build --tag=mingw-qt5:${CI_BUILD_REF_NAME} .
+  - docker build --tag=${DOCKERHUB_USER}/${DOCKERHUB_REPO}:${CI_BUILD_REF_NAME} .
   tags:
   - docker
   except:
