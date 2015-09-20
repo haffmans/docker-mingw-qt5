@@ -31,11 +31,12 @@ RUN pacman -S --noconfirm --noprogressbar \
         imagemagick \
         make \
         git \
+        binutils \
+        patch \
     && (echo -e "y\ny\n" | pacman -Scc)
 
 # Install MingW packages
 RUN pacman -S --noconfirm --noprogressbar \
-        binutils \
         mingw-w64-binutils \
         mingw-w64-crt \
         mingw-w64-gcc \
@@ -86,3 +87,8 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-tools \
         mingw-w64-zlib \
     && (echo -e "y\ny\n" | pacman -Scc)
+
+# Patch CMake Modules/GetPrerequisites.cmake for speed
+COPY cmake-getprerequisites.diff /tmp/cmake-getprerequisites.diff
+RUN cd /usr/share/cmake-3.3 \
+    && patch -p1 < /tmp/cmake-getprerequisites.diff
