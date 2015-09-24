@@ -92,3 +92,13 @@ RUN pacman -S --noconfirm --noprogressbar \
 COPY cmake-getprerequisites.diff /tmp/cmake-getprerequisites.diff
 RUN cd /usr/share/cmake-3.3 \
     && patch -p1 < /tmp/cmake-getprerequisites.diff
+
+# Create devel user...
+RUN useradd -m -d /home/devel -u 1000 -U -g 1000 -G users,tty -s /bin/bash devel
+USER devel
+ENV HOME=/home/devel
+WORKDIR /home/devel
+
+# ... but don't use it on the next image builds
+ONBUILD USER root
+ONBUILD WORKDIR /
