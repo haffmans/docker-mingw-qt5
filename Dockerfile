@@ -9,9 +9,13 @@ FROM base/archlinux:latest
 MAINTAINER Wouter Haffmans <wouter@simply-life.net>
 
 # Update base system
-RUN    pacman -Sy --noconfirm --noprogressbar archlinux-keyring  \
-    && pacman -Syu --noconfirm --noprogressbar \
+RUN    pacman -Sy --noconfirm --noprogressbar archlinux-keyring \
+    && pacman-key --populate \
+    && pacman -Su --noconfirm --noprogressbar pacman \
     && pacman-db-upgrade \
+    && pacman -Su --noconfirm --noprogressbar ca-certificates \
+    && trust extract-compat \
+    && pacman -Syyu --noconfirm --noprogressbar \
     && (echo -e "y\ny\n" | pacman -Scc)
 
 # Add Simply-life repo
