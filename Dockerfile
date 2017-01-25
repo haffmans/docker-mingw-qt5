@@ -51,7 +51,7 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-expat \
         mingw-w64-fontconfig \
         mingw-w64-freeglut \
-        mingw-w64-freetype \
+        mingw-w64-freetype2 \
         mingw-w64-gettext \
         mingw-w64-libdbus \
         mingw-w64-libiconv \
