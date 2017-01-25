@@ -6,7 +6,7 @@ Build master:
   stage: build
   script:
   - docker rmi --force ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest || /bin/true
-  - docker build --tag=${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest .
+  - docker build --no-cache --tag=${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest .
   tags:
   - docker
   only:
@@ -15,7 +15,7 @@ Build master:
 Build other:
   stage: build
   script:
-  - docker build --tag=${DOCKERHUB_USER}/${DOCKERHUB_REPO}:${CI_BUILD_REF_NAME} .
+  - docker build --no-cache --tag=${DOCKERHUB_USER}/${DOCKERHUB_REPO}:${CI_BUILD_REF_NAME} .
   tags:
   - docker
   except:
