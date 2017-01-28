@@ -34,6 +34,7 @@ RUN    echo "[mingw-w64]" >> /etc/pacman.conf \
 RUN pacman -S --noconfirm --noprogressbar \
         imagemagick \
         make \
+        ninja \
         git \
         binutils \
         patch \
