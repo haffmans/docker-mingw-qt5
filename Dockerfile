@@ -18,10 +18,10 @@ RUN    pacman -Sy --noconfirm --noprogressbar archlinux-keyring \
     && pacman -Syyu --noconfirm --noprogressbar \
     && (echo -e "y\ny\n" | pacman -Scc)
 
-# Add Simply-life repo
-RUN    echo "[simply-life]" >> /etc/pacman.conf \
+# Add martchus.no-ip.biz repo for mingw binaries
+RUN    echo "[ownstuff]" >> /etc/pacman.conf \
     && echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf \
-    && echo "Server = https://git.simply-life.net/packages/archlinux/\$arch" >> /etc/pacman.conf \
+    && echo "Server = https://martchus.no-ip.biz/repo/arch/\$repo/os/\$arch " >> /etc/pacman.conf \
     && pacman -Sy
 
 # Add mingw-repo
@@ -74,13 +74,10 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-qt5-imageformats \
         mingw-w64-qt5-location \
         mingw-w64-qt5-multimedia \
-        mingw-w64-qt5-quick1 \
         mingw-w64-qt5-quickcontrols \
         mingw-w64-qt5-script \
         mingw-w64-qt5-sensors \
         mingw-w64-qt5-svg \
-        mingw-w64-qt5-tools \
-        mingw-w64-qt5-translations \
         mingw-w64-qt5-webkit \
         mingw-w64-qt5-websockets \
         mingw-w64-qt5-winextras \
@@ -90,7 +87,17 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-termcap \
         mingw-w64-tools \
         mingw-w64-zlib \
+    && pacman -S --noconfirm --noprogressbar \
+        --force \
+        # Conflicts with qt5-base
+        mingw-w64-qt5-tools \
+        # Requires qt5-tools
+        mingw-w64-qt5-quick1 \
+        # Requires qt5-tools
+        mingw-w64-qt5-translations \
     && (echo -e "y\ny\n" | pacman -Scc)
+
+ADD Qt5CoreMacros.cmake /usr/x86_64-w64-mingw32/lib/cmake/Qt5Core/
 
 # Create devel user...
 RUN useradd -m -d /home/devel -u 1000 -U -G users,tty -s /bin/bash devel
