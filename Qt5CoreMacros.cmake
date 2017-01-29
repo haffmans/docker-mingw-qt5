@@ -129,8 +129,9 @@ function(QT5_CREATE_MOC_COMMAND infile outfile moc_flags moc_options moc_target 
     endif()
 
     set(_moc_extra_parameters_file @${_moc_parameters_file})
+    get_target_property(MOC_LOC ${Qt5Core_MOC_EXECUTABLE} IMPORTED_LOCATION)
     add_custom_command(OUTPUT ${outfile}
-                       COMMAND ${Qt5Core_MOC_EXECUTABLE} ${_moc_extra_parameters_file}
+                       COMMAND ${MOC_LOC} ${_moc_extra_parameters_file}
                        DEPENDS ${infile} ${moc_depends}
                        ${_moc_working_dir}
                        VERBATIM)
