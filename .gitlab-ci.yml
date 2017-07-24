@@ -31,16 +31,22 @@ Build other:
   except:
   - master
 
-Push master to Docker Hub:
+# Note: to be friendly to Docker Hub, the auto-update on push is disabled in Docker hub.
+# The repository itself is mirrored to GitHub immediately on every push. This way we have
+# all advantages of an automatic build, while only building images if they will actually
+# be successful.
+Build branch on Docker Hub:
   stage: deploy
+  image: governmentpaas/curl-ssl
   script:
-  - docker push ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest
-  only:
-  - master
-
-Push to Docker Hub:
-  stage: deploy
-  script:
-  - docker push ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:${CI_BUILD_REF_NAME}
+  - 'curl -H "Content-Type: application/json" --data "{\"source_type\": \"Branch\", \"source_name\": \"${CI_COMMIT_REF_NAME}\"}" -X POST https://registry.hub.docker.com/u/${DOCKERHUB_USER}/${DOCKERHUB_REPO}/trigger/${DOCKERHUB_TOKEN}/'
   except:
-  - master
+  - tags
+
+Build tag on Docker Hub:
+  stage: deploy
+  image: governmentpaas/curl-ssl
+  script:
+  - 'curl -H "Content-Type: application/json" --data "{\"source_type\": \"Tag\", \"source_name\": \"${CI_COMMIT_REF_NAME}\"}" -X POST https://registry.hub.docker.com/u/${DOCKERHUB_USER}/${DOCKERHUB_REPO}/trigger/${DOCKERHUB_TOKEN}/'
+  except:
+  - branches
