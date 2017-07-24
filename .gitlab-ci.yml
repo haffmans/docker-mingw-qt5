@@ -25,7 +25,7 @@ Build master:
 Build other:
   stage: build
   script:
-  - docker build --no-cache --tag=${DOCKERHUB_USER}/${DOCKERHUB_REPO}:${CI_BUILD_REF_NAME} .
+  - docker build --no-cache --tag=${DOCKERHUB_USER}/${DOCKERHUB_REPO}:${CI_COMMIT_REF_NAME} .
   tags:
   - docker
   except:
