@@ -70,18 +70,30 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-pkg-config \
         mingw-w64-qt5-base \
         mingw-w64-qt5-base-static \
+        mingw-w64-qt5-connectivity \
+        mingw-w64-qt5-charts \
+        mingw-w64-qt5-datavis3d \
         mingw-w64-qt5-declarative \
+        mingw-w64-qt5-gamepad \
         mingw-w64-qt5-graphicaleffects \
         mingw-w64-qt5-imageformats \
         mingw-w64-qt5-location \
         mingw-w64-qt5-multimedia \
+        mingw-w64-qt5-networkauth \
         mingw-w64-qt5-quickcontrols \
+        mingw-w64-qt5-quickcontrols2 \
         mingw-w64-qt5-script \
+        mingw-w64-qt5-scxml \
         mingw-w64-qt5-sensors \
+        mingw-w64-qt5-serialport \
         mingw-w64-qt5-svg \
+        mingw-w64-qt5-virtualkeyboard \
         mingw-w64-qt5-webkit \
+        mingw-w64-qt5-webchannel \
+        mingw-w64-qt5-webglplugin \
         mingw-w64-qt5-websockets \
         mingw-w64-qt5-winextras \
+        mingw-w64-qt5-xmlpatterns \
         mingw-w64-readline \
         mingw-w64-sdl2 \
         mingw-w64-sqlite \
@@ -89,7 +101,7 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-tools \
         mingw-w64-zlib \
     && pacman -S --noconfirm --noprogressbar \
-        --force \
+        --overwrite \
         # Conflicts with qt5-base
         mingw-w64-qt5-tools \
         # Requires qt5-tools
