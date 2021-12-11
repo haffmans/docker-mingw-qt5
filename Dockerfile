@@ -36,6 +36,7 @@ RUN pacman -S --noconfirm --noprogressbar --needed \
         patch \
         base-devel \
         unzip \
+        protobuf \
     && (echo -e "y\ny\n" | pacman -Scc)
 
 # Install MingW packages
@@ -67,6 +68,7 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-pcre \
         mingw-w64-pdcurses \
         mingw-w64-pkg-config \
+        mingw-w64-protobuf \
         mingw-w64-qt5-base \
         mingw-w64-qt5-base-static \
         mingw-w64-qt5-3d \
