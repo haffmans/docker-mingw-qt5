@@ -128,9 +128,6 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-qt5-translations \
     && (echo -e "y\ny\n" | pacman -Scc)
 
-ADD Qt5CoreMacros.cmake /usr/i686-w64-mingw32/lib/cmake/Qt5Core/
-ADD Qt5CoreMacros.cmake /usr/x86_64-w64-mingw32/lib/cmake/Qt5Core/
-
 # Back to devel user, but not for subsequent image builds
 USER devel
 ONBUILD USER root
