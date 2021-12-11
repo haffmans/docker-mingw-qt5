@@ -9,9 +9,10 @@ FROM archlinux:latest AS base
 MAINTAINER Wouter Haffmans <wouter@simply-life.net>
 
 # Update base system
-RUN    pacman -Sy --noconfirm --noprogressbar archlinux-keyring \
+RUN    pacman-key --init \
     && pacman-key --populate \
-    && pacman -Su --noconfirm --noprogressbar pacman \
+    && pacman -Sy \
+    && pacman -Su --noconfirm --noprogressbar archlinux-keyring pacman \
     && pacman-db-upgrade \
     && pacman -Su --noconfirm --noprogressbar ca-certificates \
     && trust extract-compat \
