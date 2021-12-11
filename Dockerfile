@@ -27,7 +27,7 @@ RUN    echo "[ownstuff]" >> /etc/pacman.conf \
     && pacman -Sy
 
 # Add some useful packages to the base system
-RUN pacman -S --noconfirm --noprogressbar \
+RUN pacman -S --noconfirm --noprogressbar --needed \
         imagemagick \
         make \
         ninja \
