@@ -13,7 +13,7 @@ Mirror to github:
   tags:
   - gitmirror
 
-.build_image:
+.build_image: &build_image
   script:
   - docker build --pull --target ${TARGET} --tag=${DOCKERHUB_USER}/${DOCKERHUB_REPO}:${PREFIX}${TARGET} .
   tags:
@@ -23,8 +23,8 @@ Build master base:
   <<: *build_image
   stage: build-base
   variables:
-    PREFIX=""
-    TARGET="base"
+    PREFIX: ""
+    TARGET: "base"
   only:
   - master
 
@@ -32,8 +32,8 @@ Build master qt5:
   <<: *build_image
   stage: build-derived
   variables:
-    PREFIX=""
-    TARGET="qt5"
+    PREFIX: ""
+    TARGET: "qt5"
   only:
   - master
 
@@ -41,8 +41,8 @@ Build master qt6:
   <<: *build_image
   stage: build-derived
   variables:
-    PREFIX=""
-    TARGET="qt6"
+    PREFIX: ""
+    TARGET: "qt6"
   only:
   - master
 
@@ -50,8 +50,8 @@ Build branch base:
   <<: *build_image
   stage: build-base
   variables:
-    PREFIX=""
-    TARGET="base"
+    PREFIX: ""
+    TARGET: "base"
   only:
   - master
 
@@ -59,8 +59,8 @@ Build branch qt5:
   <<: *build_image
   stage: build-derived
   variables:
-    PREFIX=""
-    TARGET="qt5"
+    PREFIX: ""
+    TARGET: "qt5"
   only:
   - master
 
@@ -68,8 +68,8 @@ Build branch qt6:
   <<: *build_image
   stage: build-derived
   variables:
-    PREFIX=""
-    TARGET="qt6"
+    PREFIX: ""
+    TARGET: "qt6"
   only:
   - master
 
