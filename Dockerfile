@@ -38,6 +38,8 @@ RUN pacman -S --noconfirm --noprogressbar \
         git \
         binutils \
         patch \
+        base-devel \
+        unzip \
     && (echo -e "y\ny\n" | pacman -Scc)
 
 # Install MingW packages
@@ -45,6 +47,7 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-binutils \
         mingw-w64-crt \
         mingw-w64-gcc \
+        mingw-w64-configure \
         mingw-w64-headers \
         mingw-w64-winpthreads \
         mingw-w64-bzip2 \
@@ -61,7 +64,7 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-libtiff \
         mingw-w64-libxml2 \
         mingw-w64-mariadb-connector-c \
-        mingw-w64-nsis \
+        nsis \
         mingw-w64-openssl \
         mingw-w64-openjpeg \
         mingw-w64-openjpeg2 \
@@ -70,6 +73,7 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-pkg-config \
         mingw-w64-qt5-base \
         mingw-w64-qt5-base-static \
+        mingw-w64-qt5-3d \
         mingw-w64-qt5-connectivity \
         mingw-w64-qt5-charts \
         mingw-w64-qt5-datavis3d \
@@ -82,13 +86,13 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-qt5-networkauth \
         mingw-w64-qt5-quickcontrols \
         mingw-w64-qt5-quickcontrols2 \
+        mingw-w64-qt5-remoteobjects \
         mingw-w64-qt5-script \
         mingw-w64-qt5-scxml \
         mingw-w64-qt5-sensors \
         mingw-w64-qt5-serialport \
         mingw-w64-qt5-svg \
         mingw-w64-qt5-virtualkeyboard \
-        mingw-w64-qt5-webkit \
         mingw-w64-qt5-webchannel \
         mingw-w64-qt5-webglplugin \
         mingw-w64-qt5-websockets \
@@ -100,13 +104,9 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-termcap \
         mingw-w64-tools \
         mingw-w64-zlib \
-    && pacman -S --noconfirm --noprogressbar \
-        --overwrite \
-        # Conflicts with qt5-base
+        mingw-w64-extra-cmake-modules \
+        mingw-w64-kirigami2 \
         mingw-w64-qt5-tools \
-        # Requires qt5-tools
-        mingw-w64-qt5-quick1 \
-        # Requires qt5-tools
         mingw-w64-qt5-translations \
     && (echo -e "y\ny\n" | pacman -Scc)
 
