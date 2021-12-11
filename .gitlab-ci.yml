@@ -1,6 +1,7 @@
 stages:
   - mirror
-  - build
+  - build-base
+  - build-derived
   - deploy
 
 Mirror to github:
@@ -12,23 +13,64 @@ Mirror to github:
   tags:
   - gitmirror
 
-Build master:
-  stage: build
+.build_image:
   script:
-  - docker rmi --force ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest || /bin/true
-  - docker build --no-cache --tag=${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest .
+  - docker build --pull --target ${TARGET} --tag=${DOCKERHUB_USER}/${DOCKERHUB_REPO}:${PREFIX}${TARGET} .
   tags:
   - docker
+
+Build master base:
+  <<: *build_image
+  stage: build-base
+  variables:
+    PREFIX=""
+    TARGET="base"
   only:
   - master
 
-Build other:
-  stage: build
-  script:
-  - docker build --no-cache --tag=${DOCKERHUB_USER}/${DOCKERHUB_REPO}:${CI_COMMIT_REF_NAME} .
-  tags:
-  - docker
-  except:
+Build master qt5:
+  <<: *build_image
+  stage: build-derived
+  variables:
+    PREFIX=""
+    TARGET="qt5"
+  only:
+  - master
+
+Build master qt6:
+  <<: *build_image
+  stage: build-derived
+  variables:
+    PREFIX=""
+    TARGET="qt6"
+  only:
+  - master
+
+Build branch base:
+  <<: *build_image
+  stage: build-base
+  variables:
+    PREFIX=""
+    TARGET="base"
+  only:
+  - master
+
+Build branch qt5:
+  <<: *build_image
+  stage: build-derived
+  variables:
+    PREFIX=""
+    TARGET="qt5"
+  only:
+  - master
+
+Build branch qt6:
+  <<: *build_image
+  stage: build-derived
+  variables:
+    PREFIX=""
+    TARGET="qt6"
+  only:
   - master
 
 # Note: to be friendly to Docker Hub, the auto-update on push is disabled in Docker hub.

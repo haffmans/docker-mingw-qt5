@@ -5,7 +5,7 @@
 # `pacman -Scc --noconfirm` responds 'N' by default to removing the cache, hence
 # the echo mechanism.
 
-FROM base/archlinux:latest
+FROM archlinux:latest AS base
 MAINTAINER Wouter Haffmans <wouter@simply-life.net>
 
 # Update base system
@@ -39,7 +39,7 @@ RUN pacman -S --noconfirm --noprogressbar --needed \
         protobuf \
     && (echo -e "y\ny\n" | pacman -Scc)
 
-# Install MingW packages
+# Install core MingW packages
 RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-binutils \
         mingw-w64-crt \
@@ -50,6 +50,7 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-bzip2 \
         mingw-w64-cmake \
         mingw-w64-expat \
+        mingw-w64-extra-cmake-modules \
         mingw-w64-fontconfig \
         mingw-w64-freeglut \
         mingw-w64-freetype2 \
@@ -69,6 +70,31 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-pdcurses \
         mingw-w64-pkg-config \
         mingw-w64-protobuf \
+        mingw-w64-readline \
+        mingw-w64-sdl2 \
+        mingw-w64-sqlite \
+        mingw-w64-termcap \
+        mingw-w64-tools \
+        mingw-w64-zlib \
+    && (echo -e "y\ny\n" | pacman -Scc)
+
+RUN echo 'MAKEFLAGS="-j8"' >> /etc/makepkg.conf
+
+# Create devel user
+RUN useradd -m -d /home/devel -u 1000 -U -G users,tty -s /bin/bash devel
+USER devel
+ENV HOME=/home/devel
+WORKDIR /home/devel
+
+# Back to devel user, but not for subsequent image builds
+USER devel
+ONBUILD USER root
+ONBUILD WORKDIR /
+
+FROM base AS qt5
+
+# Install MingW packages
+RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-qt5-base \
         mingw-w64-qt5-base-static \
         mingw-w64-qt5-3d \
@@ -96,13 +122,6 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-qt5-websockets \
         mingw-w64-qt5-winextras \
         mingw-w64-qt5-xmlpatterns \
-        mingw-w64-readline \
-        mingw-w64-sdl2 \
-        mingw-w64-sqlite \
-        mingw-w64-termcap \
-        mingw-w64-tools \
-        mingw-w64-zlib \
-        mingw-w64-extra-cmake-modules \
         mingw-w64-kirigami2 \
         mingw-w64-qt5-tools \
         mingw-w64-qt5-translations \
@@ -111,12 +130,43 @@ RUN pacman -S --noconfirm --noprogressbar \
 ADD Qt5CoreMacros.cmake /usr/i686-w64-mingw32/lib/cmake/Qt5Core/
 ADD Qt5CoreMacros.cmake /usr/x86_64-w64-mingw32/lib/cmake/Qt5Core/
 
-# Create devel user...
-RUN useradd -m -d /home/devel -u 1000 -U -G users,tty -s /bin/bash devel
+# Back to devel user, but not for subsequent image builds
 USER devel
-ENV HOME=/home/devel
-WORKDIR /home/devel
+ONBUILD USER root
+ONBUILD WORKDIR /
 
-# ... but don't use it on the next image builds
+FROM base AS qt6
+
+# Install MingW packages
+RUN pacman -S --noconfirm --noprogressbar \
+        mingw-w64-qt6-base \
+        mingw-w64-qt6-base-static \
+        mingw-w64-qt6-5compat \
+        mingw-w64-qt6-charts \
+        mingw-w64-qt6-connectivity \
+        mingw-w64-qt6-datavis3d \
+        mingw-w64-qt6-declarative \
+        mingw-w64-qt6-imageformats \
+        mingw-w64-qt6-lottie \
+        mingw-w64-qt6-multimedia \
+        mingw-w64-qt6-networkauth \
+        mingw-w64-qt6-quick3d \
+        mingw-w64-qt6-quickcontrols2 \
+        mingw-w64-qt6-quicktimeline \
+        mingw-w64-qt6-scxml \
+        mingw-w64-qt6-sensors \
+        mingw-w64-qt6-serialbus \
+        mingw-w64-qt6-serialport \
+        mingw-w64-qt6-shadertools \
+        mingw-w64-qt6-svg \
+        mingw-w64-qt6-tools \
+        mingw-w64-qt6-translations \
+        mingw-w64-qt6-virtualkeyboard \
+        mingw-w64-qt6-webchannel \
+        mingw-w64-qt6-websockets \
+    && (echo -e "y\ny\n" | pacman -Scc)
+
+# Back to devel user, but not for subsequent image builds
+USER devel
 ONBUILD USER root
 ONBUILD WORKDIR /
