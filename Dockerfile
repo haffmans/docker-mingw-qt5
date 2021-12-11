@@ -20,14 +20,10 @@ RUN    pacman -Sy --noconfirm --noprogressbar archlinux-keyring \
 
 # Add martchus.no-ip.biz repo for mingw binaries
 RUN    echo "[ownstuff]" >> /etc/pacman.conf \
-    && echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf \
     && echo "Server = https://martchus.no-ip.biz/repo/arch/\$repo/os/\$arch " >> /etc/pacman.conf \
-    && pacman -Sy
-
-# Add mingw-repo
-RUN    echo "[mingw-w64]" >> /etc/pacman.conf \
-    && echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf \
-    && echo "Server = http://downloads.sourceforge.net/project/mingw-w64-archlinux/\$arch" >> /etc/pacman.conf \
+    && pacman-key --recv-keys B9E36A7275FC61B464B67907E06FE8F53CDC6A4C \
+    && pacman-key --finger    B9E36A7275FC61B464B67907E06FE8F53CDC6A4C \
+    && pacman-key --lsign-key B9E36A7275FC61B464B67907E06FE8F53CDC6A4C \
     && pacman -Sy
 
 # Add some useful packages to the base system
