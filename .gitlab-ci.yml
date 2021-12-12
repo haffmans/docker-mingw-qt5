@@ -50,6 +50,8 @@ Build qt6:
   script:
   - docker login ${DOCKERHUB_USER} -p ${DOCKERHUB_TOKEN}
   - docker push ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:${PREFIX}${TARGET}
+  tags:
+  - docker
 
 Push base:
   <<: *push_image
