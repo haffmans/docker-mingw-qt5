@@ -48,7 +48,7 @@ Build qt6:
   <<: *prefix_var
   stage: deploy
   script:
-  - docker login ${DOCKERHUB_USER} -p ${DOCKERHUB_TOKEN}
+  - docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_TOKEN}
   - docker push ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:${PREFIX}${TARGET}
   tags:
   - docker
