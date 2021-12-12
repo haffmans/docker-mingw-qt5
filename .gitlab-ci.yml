@@ -1,8 +1,16 @@
 stages:
   - mirror
-  - build-base
-  - build-derived
+  - build
   - deploy
+
+.prefix-var: &prefix_var
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+      variables:
+        PREFIX: ""
+    - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
+      variables:
+        PREFIX: "${CI_COMMIT_REF_NAME}-"
 
 Mirror to github:
   stage: mirror
@@ -12,64 +20,29 @@ Mirror to github:
   - git-mirror "${CI_PROJECT_DIR}" git@github.com:${GITHUB_REPOSITORY}
 
 .build_image: &build_image
+  <<: *prefix_var
+  stage: build
   script:
   - docker build --pull --target ${TARGET} --tag=${DOCKERHUB_USER}/${DOCKERHUB_REPO}:${PREFIX}${TARGET} .
   tags:
   - docker
 
-Build master base:
+Build base:
   <<: *build_image
-  stage: build-base
   variables:
-    PREFIX: ""
     TARGET: "base"
-  only:
-  - master
 
-Build master qt5:
+Build qt5:
   <<: *build_image
-  stage: build-derived
+  needs: ['Build base']
   variables:
-    PREFIX: ""
     TARGET: "qt5"
-  only:
-  - master
 
-Build master qt6:
+Build qt6:
   <<: *build_image
-  stage: build-derived
+  needs: ['Build base']
   variables:
-    PREFIX: ""
     TARGET: "qt6"
-  only:
-  - master
-
-Build branch base:
-  <<: *build_image
-  stage: build-base
-  variables:
-    PREFIX: ""
-    TARGET: "base"
-  only:
-  - master
-
-Build branch qt5:
-  <<: *build_image
-  stage: build-derived
-  variables:
-    PREFIX: ""
-    TARGET: "qt5"
-  only:
-  - master
-
-Build branch qt6:
-  <<: *build_image
-  stage: build-derived
-  variables:
-    PREFIX: ""
-    TARGET: "qt6"
-  only:
-  - master
 
 # Note: to be friendly to Docker Hub, the auto-update on push is disabled in Docker hub.
 # The repository itself is mirrored to GitHub immediately on every push. This way we have
