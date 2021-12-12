@@ -44,22 +44,24 @@ Build qt6:
   variables:
     TARGET: "qt6"
 
-# Note: to be friendly to Docker Hub, the auto-update on push is disabled in Docker hub.
-# The repository itself is mirrored to GitHub immediately on every push. This way we have
-# all advantages of an automatic build, while only building images if they will actually
-# be successful.
-Build branch on Docker Hub:
+.push_image: &push_image
+  <<: *prefix_var
   stage: deploy
-  image: governmentpaas/curl-ssl
   script:
-  - 'curl -H "Content-Type: application/json" --data "{\"source_type\": \"Branch\", \"source_name\": \"${CI_COMMIT_REF_NAME}\"}" -X POST https://registry.hub.docker.com/u/${DOCKERHUB_USER}/${DOCKERHUB_REPO}/trigger/${DOCKERHUB_TOKEN}/'
-  except:
-  - tags
+  - docker login ${DOCKERHUB_USER} -p ${DOCKERHUB_TOKEN}
+  - docker push ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:${PREFIX}${TARGET}
 
-Build tag on Docker Hub:
-  stage: deploy
-  image: governmentpaas/curl-ssl
-  script:
-  - 'curl -H "Content-Type: application/json" --data "{\"source_type\": \"Tag\", \"source_name\": \"${CI_COMMIT_REF_NAME}\"}" -X POST https://registry.hub.docker.com/u/${DOCKERHUB_USER}/${DOCKERHUB_REPO}/trigger/${DOCKERHUB_TOKEN}/'
-  except:
-  - branches
+Push base:
+  <<: *push_image
+  variables:
+    TARGET: "base"
+
+Push qt5:
+  <<: *push_image
+  variables:
+    TARGET: "qt5"
+
+Push qt6:
+  <<: *push_image
+  variables:
+    TARGET: "qt6"
