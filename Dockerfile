@@ -135,8 +135,9 @@ ONBUILD WORKDIR /
 
 FROM base AS qt6
 
-# Install MingW packages
+# Install MingW packages, plus native qt6-tools required for host info
 RUN pacman -S --noconfirm --noprogressbar \
+        qt6-tools \
         mingw-w64-qt6-base \
         mingw-w64-qt6-base-static \
         mingw-w64-qt6-5compat \
