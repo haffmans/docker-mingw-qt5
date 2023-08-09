@@ -80,8 +80,6 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-zlib \
     && (echo -e "y\ny\n" | pacman -Scc)
 
-RUN echo 'MAKEFLAGS="-j8"' >> /etc/makepkg.conf
-
 # Create devel user
 RUN useradd -m -d /home/devel -u 1000 -U -G users,tty -s /bin/bash devel
 USER devel
