@@ -77,5 +77,6 @@ Push latest:
   - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
   dependencies:
   - "Tag latest"
+  - "Push qt5"
   variables:
     TARGET: "latest"
