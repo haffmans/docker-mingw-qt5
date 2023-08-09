@@ -59,3 +59,23 @@ Push qt6:
   <<: *push_image
   variables:
     TARGET: "qt6"
+
+# Tag and push latest (based on qt5, because of the current name) on the default branch too
+Tag latest:
+  <<: *prefix_var
+  rules:
+  - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+  script:
+  - docker tag ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:${PREFIX}qt5 ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:${PREFIX}latest
+  tags:
+  - docker
+  stage: deploy
+
+Push latest:
+  <<: *push_image
+  rules:
+  - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+  dependencies:
+  - "Tag latest"
+  variables:
+    TARGET: "latest"
