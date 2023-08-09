@@ -75,7 +75,7 @@ Push latest:
   <<: *push_image
   rules:
   - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
-  dependencies:
+  needs:
   - "Tag latest"
   - "Push qt5"
   variables:
