@@ -2,7 +2,15 @@ stages:
   - build
   - deploy
 
-.prefix-var: &prefix_var
+variables:
+  FORCE_REBUILD:
+    value: "0"
+    options:
+      - "0"
+      - "1"
+    description: "Use Docker build cache (0, default) or disable it (1)."
+
+.build-vars: &build_vars
   rules:
     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
       variables:
@@ -12,10 +20,11 @@ stages:
         PREFIX: "${CI_COMMIT_REF_NAME}-"
 
 .build_image: &build_image
-  <<: *prefix_var
+  <<: *build_vars
   stage: build
   script:
-  - docker build --pull --target ${TARGET} --tag=${DOCKERHUB_USER}/${DOCKERHUB_REPO}:${PREFIX}${TARGET} .
+  - if [ "${FORCE_REBUILD}" = "1" -a "${TARGET}" = "base" ]; then DOCKER_BUILD_ARGS="--no-cache --pull"; else DOCKER_BUILD_ARGS=""; fi
+  - docker build ${DOCKER_BUILD_ARGS} --target "${TARGET}" --tag="${DOCKERHUB_USER}/${DOCKERHUB_REPO}:${PREFIX}${TARGET}" .
   tags:
   - docker
 
@@ -37,7 +46,7 @@ Build qt6:
     TARGET: "qt6"
 
 .push_image: &push_image
-  <<: *prefix_var
+  <<: *build_vars
   stage: deploy
   script:
   - docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_TOKEN}
@@ -62,7 +71,6 @@ Push qt6:
 
 # Tag and push latest (based on qt5, because of the current name) on the default branch too
 Tag latest:
-  <<: *prefix_var
   rules:
   - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
   script:
