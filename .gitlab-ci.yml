@@ -3,12 +3,12 @@ stages:
   - deploy
 
 variables:
-  FORCE_REBUILD:
+  PULL_BASE:
     value: "0"
     options:
       - "0"
       - "1"
-    description: "Use Docker build cache (0, default) or disable it (1)."
+    description: "Pull the base image (1) or not (0, default). Adds --pull to docker build of the base image."
 
 .build-vars: &build_vars
   rules:
@@ -23,8 +23,12 @@ variables:
   <<: *build_vars
   stage: build
   script:
-  - if [ "${FORCE_REBUILD}" = "1" -a "${TARGET}" = "base" ]; then DOCKER_BUILD_ARGS="--no-cache --pull"; else DOCKER_BUILD_ARGS=""; fi
-  - docker build ${DOCKER_BUILD_ARGS} --target "${TARGET}" --tag="${DOCKERHUB_USER}/${DOCKERHUB_REPO}:${PREFIX}${TARGET}" .
+  - if [ "${PULL_BASE}" = "1" -a "${TARGET}" = "base" ]; then DOCKER_BUILD_ARGS="--pull"; else DOCKER_BUILD_ARGS=""; fi
+  - docker build ${DOCKER_BUILD_ARGS}
+      --build-arg COMMIT_SHA=${CI_COMMIT_SHA}
+      --build-arg PIPELINE_ID=${CI_PIPELINE_ID}
+      --target "${TARGET}"
+      --tag="${DOCKERHUB_USER}/${DOCKERHUB_REPO}:${PREFIX}${TARGET}" .
   tags:
   - docker
 

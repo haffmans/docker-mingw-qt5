@@ -6,7 +6,15 @@
 # the echo mechanism.
 
 FROM archlinux:latest AS base
-MAINTAINER Wouter Haffmans <wouter@simply-life.net>
+
+ARG COMMIT_SHA
+ARG PIPELINE_ID
+
+LABEL org.opencontainers.image.url="https://git.simply-life.net/docker/mingw-qt5"
+LABEL org.opencontainers.image.source="https://git.simply-life.net/docker/mingw-qt5"
+LABEL org.opencontainers.image.revision="$COMMIT_SHA"
+LABEL org.opencontainers.image.authors="Wouter Haffmans <wouter@simply-life.net>"
+LABEL org.opencontainers.image.version="$PIPELINE_ID"
 
 # Update base system
 RUN    pacman-key --init \
