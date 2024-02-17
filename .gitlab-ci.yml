@@ -23,7 +23,7 @@ variables:
   <<: *build_vars
   stage: build
   script:
-  - if [ "${PULL_BASE}" = "1" -a "${TARGET}" = "base" ]; then DOCKER_BUILD_ARGS="--pull"; else DOCKER_BUILD_ARGS=""; fi
+  - if [ "${PULL_BASE}" = "1" ]; then DOCKER_BUILD_ARGS="--pull"; else DOCKER_BUILD_ARGS=""; fi
   - docker build ${DOCKER_BUILD_ARGS}
       --build-arg COMMIT_SHA=${CI_COMMIT_SHA}
       --build-arg PIPELINE_ID=${CI_PIPELINE_ID}
