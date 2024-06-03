@@ -1,4 +1,4 @@
-# MingW64 + Qt5 for cross-compile builds to Windows
+# MingW64 + Qt5/Qt6 for cross-compile builds to Windows
 # Based on ArchLinux image
 
 # Note: pacman cache is cleared to reduce image size by a few 100 mbs in total.
@@ -50,10 +50,12 @@ RUN pacman -S --noconfirm --noprogressbar --needed \
     && (echo -e "y\ny\n" | pacman -Scc)
 
 # Install core MingW packages
+# Note: ownstuff/mingw-w64-gcc is chosen explicitly as it's currently more up-to-date and doesn't
+#       build broken packages (https://gitlab.archlinux.org/archlinux/packaging/packages/mingw-w64-gcc/-/issues/6)
 RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-binutils \
         mingw-w64-crt \
-        mingw-w64-gcc \
+        ownstuff/mingw-w64-gcc \
         mingw-w64-configure \
         mingw-w64-headers \
         mingw-w64-winpthreads \
