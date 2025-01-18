@@ -132,7 +132,6 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-qt5-websockets \
         mingw-w64-qt5-winextras \
         mingw-w64-qt5-xmlpatterns \
-        mingw-w64-kirigami2 \
         mingw-w64-qt5-tools \
         mingw-w64-qt5-translations \
     && (echo -e "y\ny\n" | pacman -Scc)
