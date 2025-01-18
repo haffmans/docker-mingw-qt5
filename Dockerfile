@@ -156,9 +156,11 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-qt6-datavis3d \
         mingw-w64-qt6-declarative \
         mingw-w64-qt6-imageformats \
+        mingw-w64-qt6-location \
         mingw-w64-qt6-lottie \
         mingw-w64-qt6-multimedia \
         mingw-w64-qt6-networkauth \
+        mingw-w64-qt6-positioning \
         mingw-w64-qt6-quick3d \
         mingw-w64-qt6-quickcontrols2 \
         mingw-w64-qt6-quicktimeline \
@@ -173,6 +175,7 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-qt6-virtualkeyboard \
         mingw-w64-qt6-webchannel \
         mingw-w64-qt6-websockets \
+        mingw-w64-qt6-webview \
         mingw-w64-kirigami \
     && (echo -e "y\ny\n" | pacman -Scc)
 
