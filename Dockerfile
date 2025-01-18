@@ -162,7 +162,6 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-qt6-networkauth \
         mingw-w64-qt6-positioning \
         mingw-w64-qt6-quick3d \
-        mingw-w64-qt6-quickcontrols2 \
         mingw-w64-qt6-quicktimeline \
         mingw-w64-qt6-scxml \
         mingw-w64-qt6-sensors \
