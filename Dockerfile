@@ -173,6 +173,7 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-qt6-virtualkeyboard \
         mingw-w64-qt6-webchannel \
         mingw-w64-qt6-websockets \
+        mingw-w64-kirigami \
     && (echo -e "y\ny\n" | pacman -Scc)
 
 # Back to devel user, but not for subsequent image builds
