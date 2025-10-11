@@ -50,12 +50,10 @@ RUN pacman -S --noconfirm --noprogressbar --needed \
     && (echo -e "y\ny\n" | pacman -Scc)
 
 # Install core MingW packages
-# Note: ownstuff/mingw-w64-gcc is chosen explicitly as it's currently more up-to-date and doesn't
-#       build broken packages (https://gitlab.archlinux.org/archlinux/packaging/packages/mingw-w64-gcc/-/issues/6)
 RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-binutils \
         mingw-w64-crt \
-        ownstuff/mingw-w64-gcc \
+        mingw-w64-gcc \
         mingw-w64-configure \
         mingw-w64-headers \
         mingw-w64-winpthreads \
