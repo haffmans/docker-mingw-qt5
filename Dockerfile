@@ -108,7 +108,6 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-qt5-3d \
         mingw-w64-qt5-connectivity \
         mingw-w64-qt5-charts \
-        mingw-w64-qt5-datavis3d \
         mingw-w64-qt5-declarative \
         mingw-w64-qt5-gamepad \
         mingw-w64-qt5-graphicaleffects \
@@ -155,7 +154,6 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-qt6-declarative \
         mingw-w64-qt6-imageformats \
         mingw-w64-qt6-location \
-        mingw-w64-qt6-lottie \
         mingw-w64-qt6-multimedia \
         mingw-w64-qt6-networkauth \
         mingw-w64-qt6-positioning \
