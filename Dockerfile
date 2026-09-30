@@ -99,45 +99,6 @@ USER devel
 ONBUILD USER root
 ONBUILD WORKDIR /
 
-FROM base AS qt5
-
-# Install MingW packages
-RUN pacman -S --noconfirm --noprogressbar \
-        mingw-w64-qt5-base \
-        mingw-w64-qt5-base-static \
-        mingw-w64-qt5-3d \
-        mingw-w64-qt5-connectivity \
-        mingw-w64-qt5-charts \
-        mingw-w64-qt5-declarative \
-        mingw-w64-qt5-gamepad \
-        mingw-w64-qt5-graphicaleffects \
-        mingw-w64-qt5-imageformats \
-        mingw-w64-qt5-location \
-        mingw-w64-qt5-multimedia \
-        mingw-w64-qt5-networkauth \
-        mingw-w64-qt5-quickcontrols \
-        mingw-w64-qt5-quickcontrols2 \
-        mingw-w64-qt5-remoteobjects \
-        mingw-w64-qt5-script \
-        mingw-w64-qt5-scxml \
-        mingw-w64-qt5-sensors \
-        mingw-w64-qt5-serialport \
-        mingw-w64-qt5-svg \
-        mingw-w64-qt5-virtualkeyboard \
-        mingw-w64-qt5-webchannel \
-        mingw-w64-qt5-webglplugin \
-        mingw-w64-qt5-websockets \
-        mingw-w64-qt5-winextras \
-        mingw-w64-qt5-xmlpatterns \
-        mingw-w64-qt5-tools \
-        mingw-w64-qt5-translations \
-    && (echo -e "y\ny\n" | pacman -Scc)
-
-# Back to devel user, but not for subsequent image builds
-USER devel
-ONBUILD USER root
-ONBUILD WORKDIR /
-
 FROM base AS qt6
 
 # Install MingW packages, plus some native tools required for host info and linguist tools
